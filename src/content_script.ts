@@ -1,12 +1,13 @@
+import * as $ from 'jquery';
 
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-    if (msg.color) {
-        console.log('Receive color = ' + msg.color);
-        document.body.style.backgroundColor = msg.color;
-        sendResponse('Change color to ' + msg.color);
-    } else {
-        sendResponse('Color message is none.');
-    }
-    const a = $.ajax;
-});
+function replaceJMWithManager(element) {
+    $(element).contents().each(function() {
+        if (this.nodeType === 3) { // if text node
+            this.nodeValue = this.nodeValue.replace(/JM/g, 'Manager');
+        } else if (this.nodeType === 1) { // if element node
+            replaceJMWithManager(this); 
+        }
+    });
+}
 
+replaceJMWithManager($('body'));
